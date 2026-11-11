@@ -1,0 +1,40 @@
+Jordan Hale
+Leeds
+jordan.hale.sample@example.com
+
+MSc Computing graduate. Dissertation on spotting unusual queries in a university database. Placement year with a campus security operations team.
+
+Skills
+SQL
+PostgreSQL
+Python
+Linux
+Threat modelling
+SIEM log review
+Git
+
+Experience
+
+Security Operations Intern
+Northwind Campus IT, Leeds
+June 2024 - June 2025
+- Reviewed SIEM alerts during on-call shadowing and wrote a one-line note for each alert I closed.
+- Wrote SQL to pull weekly account-lockout counts for the identity team.
+- Documented three phishing incidents for the service desk, including which mailbox rule was abused.
+- Helped improve security.
+
+Research Assistant
+School of Computing, University of Example
+October 2023 - May 2024
+- Cleaned a CSV of 40,000 query logs and loaded them into PostgreSQL.
+- Built a Python script to flag queries outside office hours.
+- Worked on a project with the team.
+
+Education
+
+MSc Computing, University of Example, 2025
+Dissertation: anomaly detection on database audit logs.
+
+BSc Computer Science, University of Example, 2023
+
+This CV is fictional sample data for ai-cv-analyser.

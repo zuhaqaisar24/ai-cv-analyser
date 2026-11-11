@@ -1,0 +1,24 @@
+Graduate Cyber Security Analyst
+Harbour & Co, Leeds, hybrid
+Closing date: 30 January 2026
+
+We are hiring a graduate analyst to join the security operations team.
+
+You will:
+- Triage security alerts and write a short note for each one you close.
+- Tune noisy detections with a senior analyst.
+- Help the team keep incident tickets factual and complete.
+
+Must have:
+- SQL
+- Python
+- Linux
+- Incident documentation you can show, even from a placement or a lab
+
+Nice to have:
+- Splunk
+- Kubernetes
+- AWS
+- CISSP
+
+This advert is fictional sample data for ai-cv-analyser.
