@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 
 export function PipelineList() {
   return (
-    <section className="rounded-2xl bg-card px-5 py-5 shadow-sm ring-1 ring-primary/10">
+    <section className="card-lift rounded-2xl bg-card px-5 py-5 shadow-sm ring-1 ring-primary/10">
       <h2 className="font-heading text-lg">In this build</h2>
       <p className="mt-1 text-sm text-muted-foreground">
         Two steps run today. The rest are lessons, and the results page is already waiting for them.

@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowLeft, Info } from "lucide-react";
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
 
@@ -43,26 +44,30 @@ export function ResultsView() {
   return (
     <div className="mx-auto max-w-6xl space-y-8 px-4 py-10">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <Link href="/" className="text-sm text-primary underline-offset-4 hover:underline">
+        <Link
+          href="/"
+          className={cn(buttonVariants({ variant: "outline" }), "h-9 w-fit gap-1.5 px-3")}
+        >
+          <ArrowLeft />
           Analyse another CV
         </Link>
-        <p className="text-sm font-medium text-primary">
-          {result.mode === "mock" ? "Test mode" : `Live · ${result.model ?? "model"}`}
-        </p>
+        {result.mode === "live" ? (
+          <p className="text-sm text-muted-foreground">Live · {result.model ?? "model"}</p>
+        ) : null}
       </div>
 
       {result.mode === "mock" ? (
-        <Alert className="border-primary/30 bg-accent">
-          <AlertTitle>Test mode</AlertTitle>
-          <AlertDescription>
-            Test mode: no AI key yet, so you&apos;re seeing a sample profile, not your CV. Add OPENAI_API_KEY to .env.local to analyse your real CV.
+        <Alert className="items-center border-border bg-secondary/70 py-2 text-foreground shadow-none">
+          <Info />
+          <AlertDescription className="text-foreground/85">
+            Test mode: showing a sample profile. Add OPENAI_API_KEY to .env.local to analyse your own CV.
           </AlertDescription>
         </Alert>
       ) : (
-        <Alert>
-          <AlertTitle>Live mode</AlertTitle>
+        <Alert className="items-center border-border bg-card py-2 shadow-none">
+          <Info />
           <AlertDescription>
-            Profile extracted with {result.model}. Check anything important against the CV text at the bottom. Models miss things, and sometimes add them.
+            Profile extracted with {result.model}. Check anything important against the text read from your CV.
           </AlertDescription>
         </Alert>
       )}
@@ -104,7 +109,8 @@ export function ResultsView() {
         </Alert>
       ) : null}
 
-      <section className="rounded-2xl bg-card px-5 py-5 shadow-sm ring-1 ring-primary/10">
+      <div className="rise-in">
+      <section className="card-lift rounded-2xl bg-card px-5 py-5 shadow-sm ring-1 ring-primary/10">
         <h2 className="font-heading text-2xl">Text read from your CV</h2>
         <p className="mt-2 max-w-3xl text-sm leading-relaxed text-muted-foreground">
           This is the text taken from the file or paste you just submitted. If you recognise it, the upload worked. In test mode the profile further down is still the sample, not this text.
@@ -113,6 +119,7 @@ export function ResultsView() {
           {result.cvText}
         </pre>
       </section>
+      </div>
 
       <CvProfileView profile={result.cvProfile} />
       <PlannedSections result={result} />

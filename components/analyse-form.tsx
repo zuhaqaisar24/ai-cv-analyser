@@ -1,5 +1,6 @@
 "use client";
 
+import { Info } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -121,11 +122,11 @@ export function AnalyseForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="rounded-2xl bg-card px-4 py-6 shadow-sm ring-1 ring-primary/10 sm:px-6" aria-busy={pending}>
-      <Alert className="mb-5 border-primary/25 bg-accent">
-        <AlertTitle>Test mode</AlertTitle>
-        <AlertDescription>
-          No AI key yet. The next page will show a sample profile, not a reading of your CV. Add OPENAI_API_KEY to .env.local to analyse your real CV. The text from your file is still shown, so you can see that the upload worked.
+    <form onSubmit={onSubmit} className="card-lift rounded-2xl bg-card px-4 py-6 shadow-sm ring-1 ring-primary/10 sm:px-6" aria-busy={pending}>
+      <Alert className="mb-5 items-center border-border bg-secondary/70 py-2 text-foreground shadow-none">
+        <Info />
+        <AlertDescription className="text-foreground/85">
+          Test mode: results show a sample profile. Add OPENAI_API_KEY to .env.local to analyse your own CV.
         </AlertDescription>
       </Alert>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">

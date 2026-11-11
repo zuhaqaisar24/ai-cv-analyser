@@ -1,8 +1,9 @@
 import type { PipelineStep } from "@/lib/pipeline";
 
-export function LessonCard({ step }: { step: PipelineStep }) {
+export function LessonCard({ step, delay = 0 }: { step: PipelineStep; delay?: number }) {
   return (
-    <article className="rounded-2xl border border-dashed border-primary/35 bg-accent/40 px-5 py-5">
+    <div className="rise-in" style={{ animationDelay: `${delay}ms` }}>
+    <article className="card-lift rounded-2xl border border-dashed border-primary/35 bg-accent/40 px-5 py-5">
       <p className="font-mono text-xs uppercase tracking-[0.14em] text-primary">
         Lesson {step.lesson}
         {step.lessonName ? ` · ${step.lessonName}` : ""}
@@ -15,5 +16,6 @@ export function LessonCard({ step }: { step: PipelineStep }) {
         </p>
       ) : null}
     </article>
+    </div>
   );
 }

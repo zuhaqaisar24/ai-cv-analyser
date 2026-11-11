@@ -12,11 +12,11 @@ export default function HomePage() {
         <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
           Upload a PDF or paste the text, then put a job advert beside it. With an API key, CVAnalyser turns the CV into skills, roles, and education. The score, the gaps, and the new bullets are lessons, and the page is ready for them.
         </p>
-        <div className="mt-8">
+        <div className="rise-in mt-8">
           <AnalyseForm />
         </div>
       </div>
-      <aside className="lg:sticky lg:top-6">
+      <aside className="rise-in lg:sticky lg:top-6" style={{ animationDelay: "90ms" }}>
         <PipelineList />
       </aside>
     </div>

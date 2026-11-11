@@ -45,7 +45,8 @@ export function PlannedSections({ result }: { result: AnalyseResponse }) {
           </div>
         ) : (
           <div className="space-y-4">
-            <div className="rounded-2xl bg-card px-5 py-5 shadow-sm ring-1 ring-primary/10">
+            <div className="rise-in" style={{ animationDelay: "140ms" }}>
+            <div className="card-lift rounded-2xl bg-card px-5 py-5 shadow-sm ring-1 ring-primary/10">
               <h2 className="font-heading text-2xl">Your job advert</h2>
               <p className="mt-2 max-w-3xl text-sm leading-relaxed text-muted-foreground">
                 This is the advert you pasted. CVAnalyser has not matched it to the CV. That matching starts in Lesson 1, and it is not built yet.
@@ -54,7 +55,8 @@ export function PlannedSections({ result }: { result: AnalyseResponse }) {
                 {result.jobAdvertText}
               </pre>
             </div>
-            <LessonCard step={lessonStep("job")} />
+            </div>
+            <LessonCard step={lessonStep("job")} delay={200} />
           </div>
         )}
         {result.jobProfile ? (
@@ -105,7 +107,7 @@ export function PlannedSections({ result }: { result: AnalyseResponse }) {
             ) : null}
           </div>
         ) : (
-          <LessonCard step={lessonStep("match")} />
+          <LessonCard step={lessonStep("match")} delay={260} />
         )}
       </section>
 
@@ -133,7 +135,7 @@ export function PlannedSections({ result }: { result: AnalyseResponse }) {
             )}
           </div>
         ) : (
-          <LessonCard step={lessonStep("gaps")} />
+          <LessonCard step={lessonStep("gaps")} delay={320} />
         )}
       </section>
 
@@ -162,7 +164,7 @@ export function PlannedSections({ result }: { result: AnalyseResponse }) {
             )}
           </div>
         ) : (
-          <LessonCard step={lessonStep("rewrites")} />
+          <LessonCard step={lessonStep("rewrites")} delay={380} />
         )}
       </section>
 
@@ -194,11 +196,11 @@ export function PlannedSections({ result }: { result: AnalyseResponse }) {
             )}
           </div>
         ) : (
-          <LessonCard step={lessonStep("resources")} />
+          <LessonCard step={lessonStep("resources")} delay={440} />
         )}
       </section>
 
-      {result.guard.active ? null : <LessonCard step={lessonStep("guard")} />}
+      {result.guard.active ? null : <LessonCard step={lessonStep("guard")} delay={500} />}
     </div>
   );
 }

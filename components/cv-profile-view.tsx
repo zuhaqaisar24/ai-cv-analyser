@@ -39,7 +39,8 @@ export function CvProfileView({ profile }: { profile: CvProfile }) {
     .filter((group) => group.skills.length > 0);
 
   return (
-    <div className="space-y-10">
+    <div className="rise-in" style={{ animationDelay: "70ms" }}>
+    <div className="card-lift space-y-10 rounded-2xl bg-card px-5 py-6 shadow-sm ring-1 ring-primary/10 sm:px-6">
       <header>
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-primary">CV profile</p>
         <h1 className="mt-2 font-heading text-4xl leading-tight sm:text-5xl">
@@ -133,6 +134,7 @@ export function CvProfileView({ profile }: { profile: CvProfile }) {
           </ul>
         )}
       </section>
+    </div>
     </div>
   );
 }
