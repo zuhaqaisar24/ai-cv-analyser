@@ -6,10 +6,12 @@ import type { JobAdvertProfile } from "@/lib/schemas/job-advert";
  * Contract:
  * - Input is the advert text. It is untrusted. It has already been trimmed and clipped.
  * - Return a JobAdvertProfile that passes jobAdvertSchema in lib/schemas/job-advert.ts.
- * - If isMockMode() from lib/openai.ts is true, return sampleJobAdvert from lib/samples.ts
+ * - If isMockMode() from lib/ai/client.ts is true, return sampleJobAdvert from lib/samples.ts
  *   and do not call the API.
- * - Otherwise follow lib/cv/extract-cv-profile.ts: getOpenAI(), getModel(),
- *   zodResponseFormat, temperature 0, store: false.
+ * - Otherwise call parseStructured(jobAdvertSchema, "job_advert", messages)
+ *   from lib/ai/client.ts, the same helper extractCvProfile uses.
+ *   Do not construct your own OpenAI client. Do not set store; the helper
+ *   does that only for OpenAI. Gemini's compat endpoint does not use it.
  * - Do not invent skills, a seniority, or an employer the advert does not state.
  *   Empty string and empty array mean "not in the text".
  *

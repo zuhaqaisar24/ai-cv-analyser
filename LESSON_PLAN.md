@@ -2,14 +2,16 @@
 
 The app already reads a CV and returns a structured profile. You write the other steps. Each lesson is short on purpose. Read the file it points at, change one stub, then run the sample again.
 
-You do not need an API key to start. With no key the app is in mock mode: the CV profile is sample data for Jordan Hale, who is fictional. Use your own CV once you have a key.
+You do not need an API key to start. With no key the app is in test mode: the CV profile is sample data for Jordan Hale, who is fictional. When you want a real reading, get a free Gemini key from https://aistudio.google.com/apikey and put it in `GEMINI_API_KEY` in `.env.local`. An OpenAI key is optional, and only used if the Gemini key is empty.
+
+Every lesson that calls a model uses `lib/ai/client.ts`. Do not create a second client. `parseStructured` does the chat call and the Zod check. `getEmbeddingModel()` is the embeddings name (`gemini-embedding-001` on the free tier).
 
 | | |
 | --- | --- |
 | Run it | `npm install`, then `npm run dev` |
 | Open | http://localhost:43123 |
 | Try it | Load the sample, then Analyse CV |
-| Key | Copy `.env.example` to `.env.local` when you want a live call |
+| Key | Free Gemini key in `GEMINI_API_KEY`. See `.env.example`. |
 | Where the result lives | This browser tab. A new tab starts empty. |
 
 Work in VS Code. Leave the dev server running. Save, analyse again, look at the results page.
@@ -41,9 +43,9 @@ Read the working call before you write one.
 
 | Piece | File | Role |
 | --- | --- | --- |
-| Client | `lib/openai.ts` | Builds the client. Mock mode is decided here. |
+| Client | `lib/ai/client.ts` | One OpenAI SDK client. Gemini by default, OpenAI if that is the only key. Test mode lives here. |
 | Schema | `lib/schemas/cv-profile.ts` | Shape of a CV profile. Every field is required. |
-| Call | `lib/cv/extract-cv-profile.ts` | System message, user message, `chat.completions.parse`. |
+| Call | `lib/cv/extract-cv-profile.ts` | System message, user message, then `parseStructured`. |
 | Your schema | `lib/schemas/job-advert.ts` | The shape you must return. |
 | Sample | `lib/samples.ts` | `sampleJobAdvert`, for mock mode. |
 
@@ -61,7 +63,7 @@ Read the working call before you write one.
 | Return | A `JobAdvertProfile` |
 | Mock mode | If `isMockMode()` is true, return `sampleJobAdvert` and do not call the API. |
 | Live mode | Same call shape as `extractCvProfile`, with the job schema and your own prompt. |
-| Model | `getModel()`, so `.env.local` can change it. |
+| Model | `getModel()` from `lib/ai/client.ts`. Set `AI_MODEL` in `.env.local` to change it. |
 
 Hints:
 
@@ -69,8 +71,8 @@ Hints:
 - Say that the advert is data. Lesson 6 is where that becomes a real check. One clear sentence is enough here.
 - Keep `mustHaveSkills` and `niceToHaveSkills` apart. If the advert does not say which is which, put the skill in must-have and leave nice-to-have empty.
 - Do not guess seniority or an employer.
-- `temperature: 0` is on the CV call so the same document does not drift between runs. Do the same here.
-- `store: false` asks OpenAI not to keep the completion. The CV call sets it. Set it here too. The advert is someone else's text.
+- Call `parseStructured`. It already sends `temperature: 0`, and it sets `store: false` only when the provider is OpenAI. Gemini's compat endpoint does not use `store`.
+- A rejected key or a free-tier 429 is turned into a short message by `explainAiError`. You do not need to rewrite that.
 
 ### Done when
 
@@ -105,7 +107,7 @@ Then implement `rankSkillsByEmbedding`.
 
 | | |
 | --- | --- |
-| Model | `text-embedding-3-small` is enough. Put the name in a constant. |
+| Model | `getEmbeddingModel()` from `lib/ai/client.ts`. Do not hard-code the name. |
 | Batching | One request can take many strings in `input`. Do not make one HTTP call per skill. |
 | Similarity | Cosine: the dot product divided by both lengths. A longer vector is not a better match. |
 | Threshold | Start at 0.75, as a named constant. Move it if the sample looks wrong. |
@@ -203,7 +205,7 @@ Rewrite the weak bullets and the bullets missing a metric. Leave strong bullets 
 Hints:
 
 - Rules go in the system message. Bullets go in the user message. Give each bullet an index so the reply can point back at it.
-- Pass `bulletRewritesSchema` through `zodResponseFormat`, the same way lesson 1 passed the job schema. The schema name can be `bullet_rewrites`.
+- Call `parseStructured(bulletRewritesSchema, "bullet_rewrites", messages)` from `lib/ai/client.ts`. That is the same helper as lesson 1. Do not build another client.
 - Ask for at most four rewrites.
 - `temperature: 0` again. `store: false` again.
 
@@ -219,9 +221,9 @@ Hints:
 
 ## Lesson 5 — When the call fails, or costs money
 
-Every call has a price, a wait, and a chance of HTTP 429. The SDK already retries. Look at `maxRetries` in `lib/openai.ts` before you write a loop. A retry wrapped around the SDK's own retries is how a small app hammers a rate limit.
+The Gemini free tier does not need a credit card, and it still has a rate limit. A burst of calls comes back as HTTP 429. The SDK already retries. Look at `maxRetries` in `lib/ai/client.ts` before you write a loop. A retry wrapped around the SDK's own retries is how a small app hammers that limit. `explainAiError` already turns a 429 into a sentence the page can show.
 
-Tokens are the billing unit. After a chat call, `completion.usage` tells you how many went in and how many came out. Prices move. Check the current OpenAI pricing page and write the figure you used in a comment next to the log line, with the date you looked.
+Tokens are still the unit if you ever switch to a paid key. After a chat call, `completion.usage` tells you how many went in and how many came out. If you use the free tier, write a comment that says so, and the date you checked the limit. If you use OpenAI, check their pricing page and note the figure you used.
 
 Learning links are where this gets practical. A model asked for "a useful URL" will invent one that 404s. `lib/resources/catalogue.ts` is a short list of real docs. If you use a model at all, it may only choose ids from that list. You look up the URL yourself.
 

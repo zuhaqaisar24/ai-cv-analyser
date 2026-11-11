@@ -5,8 +5,8 @@ import type { BulletRewrites } from "@/lib/schemas/rewrites";
 /**
  * TODO(lesson-4): Rewrite weak bullets and bullets that lack a metric.
  *
- * Use chat.completions.parse and zodResponseFormat with bulletRewritesSchema,
- * the same call shape as lib/cv/extract-cv-profile.ts.
+ * Call parseStructured from lib/ai/client.ts with bulletRewritesSchema,
+ * the same helper lib/cv/extract-cv-profile.ts uses. Do not build a second client.
  *
  * Rules that belong in the prompt:
  * - Do not add a tool, a number, or an outcome that is not in the CV.

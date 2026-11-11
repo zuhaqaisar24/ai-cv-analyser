@@ -126,7 +126,7 @@ export function AnalyseForm() {
       <Alert className="mb-5 items-center border-border bg-secondary/70 py-2 text-foreground shadow-none">
         <Info />
         <AlertDescription className="text-foreground/85">
-          Test mode: results show a sample profile. Add OPENAI_API_KEY to .env.local to analyse your own CV.
+          Test mode: showing a sample profile. Add GEMINI_API_KEY to .env.local to analyse your own CV.
         </AlertDescription>
       </Alert>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">

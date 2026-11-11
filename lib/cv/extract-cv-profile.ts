@@ -1,9 +1,7 @@
 import "server-only";
 
-import { zodResponseFormat } from "openai/helpers/zod";
-
+import { parseStructured, isMockMode } from "@/lib/ai/client";
 import { AnalyseError } from "@/lib/errors";
-import { getModel, getOpenAI, isMockMode } from "@/lib/openai";
 import { cvProfileSchema, type CvProfile } from "@/lib/schemas/cv-profile";
 import { sampleCvProfile } from "@/lib/samples";
 
@@ -31,7 +29,7 @@ function userMessage(cvText: string): string {
 
 /**
  * The one live model call in this foundation.
- * Lesson 1 copies this shape for the job advert.
+ * Lesson 1 should call parseStructured from lib/ai/client.ts the same way.
  * Lesson 6 hardens the <cv> markers. Do not rely on the prompt alone.
  */
 export async function extractCvProfile(cvText: string): Promise<CvProfile> {
@@ -39,32 +37,11 @@ export async function extractCvProfile(cvText: string): Promise<CvProfile> {
     return sampleCvProfile;
   }
 
-  const client = getOpenAI();
-
   try {
-    const completion = await client.chat.completions.parse({
-      model: getModel(),
-      temperature: 0,
-      max_completion_tokens: 2500,
-      store: false,
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        { role: "user", content: userMessage(cvText) },
-      ],
-      response_format: zodResponseFormat(cvProfileSchema, "cv_profile"),
-    });
-
-    const message = completion.choices[0]?.message;
-    if (!message?.parsed) {
-      throw new AnalyseError(
-        message?.refusal
-          ? "The model refused to extract a profile from this CV."
-          : "The model returned no profile.",
-        502,
-      );
-    }
-
-    return cvProfileSchema.parse(message.parsed);
+    return await parseStructured(cvProfileSchema, "cv_profile", [
+      { role: "system", content: SYSTEM_PROMPT },
+      { role: "user", content: userMessage(cvText) },
+    ]);
   } catch (error) {
     if (error instanceof AnalyseError) {
       throw error;

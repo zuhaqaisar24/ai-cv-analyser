@@ -8,7 +8,8 @@ import type { LearningResources } from "@/lib/schemas/resources";
  * A keyword overlap between the gap and each entry's topics is enough.
  * If you call a model, it may return catalogue ids, never URLs.
  * Log completion.usage if you make a call, and fall back to the keyword
- * match when the call throws. Read maxRetries in lib/openai.ts first.
+ * match when the call throws. Read maxRetries in lib/ai/client.ts first.
+ * A 429 from the Gemini free tier is explained by explainAiError.
  *
  * If gaps is null, return null.
  * At most two links per gap. Skip a gap when nothing in the catalogue is close.

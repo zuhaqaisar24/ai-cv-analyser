@@ -60,7 +60,7 @@ export function ResultsView() {
         <Alert className="items-center border-border bg-secondary/70 py-2 text-foreground shadow-none">
           <Info />
           <AlertDescription className="text-foreground/85">
-            Test mode: showing a sample profile. Add OPENAI_API_KEY to .env.local to analyse your own CV.
+            Test mode: showing a sample profile. Add GEMINI_API_KEY to .env.local to analyse your own CV.
           </AlertDescription>
         </Alert>
       ) : (

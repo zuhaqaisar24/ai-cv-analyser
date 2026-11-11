@@ -6,7 +6,7 @@ import { analyseGaps } from "@/lib/gaps/analyse-gaps";
 import { extractJobAdvert } from "@/lib/job/extract-job-advert";
 import { clipText, MAX_CV_CHARS, MAX_JOB_CHARS, MAX_PDF_BYTES, MIN_CV_CHARS, MIN_JOB_CHARS } from "@/lib/limits";
 import { scoreMatch } from "@/lib/match/score-match";
-import { getModel, isMockMode } from "@/lib/openai";
+import { getModel, isMockMode } from "@/lib/ai/client";
 import { extractPdfText } from "@/lib/pdf";
 import { suggestLearningResources } from "@/lib/resources/suggest-resources";
 import { rewriteBullets } from "@/lib/rewrites/rewrite-bullets";
