@@ -2,7 +2,7 @@ import type { PipelineStep } from "@/lib/pipeline";
 
 export function LessonCard({ step }: { step: PipelineStep }) {
   return (
-    <article className="rounded-xl border border-dashed border-border bg-background/60 px-4 py-4">
+    <article className="rounded-2xl border border-dashed border-primary/35 bg-accent/40 px-5 py-5">
       <p className="font-mono text-xs uppercase tracking-[0.14em] text-primary">
         Lesson {step.lesson}
         {step.lessonName ? ` · ${step.lessonName}` : ""}

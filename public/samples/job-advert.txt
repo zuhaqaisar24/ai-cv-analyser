@@ -21,4 +21,4 @@ Nice to have:
 - AWS
 - CISSP
 
-This advert is fictional sample data for ai-cv-analyser.
+This advert is fictional sample data for CVAnalyser.

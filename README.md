@@ -1,10 +1,12 @@
-# ai-cv-analyser
+# CVAnalyser
 
 A CV and a job advert go in. A structured profile comes out: skills, roles, and education, checked against a schema before the page ever sees them.
 
+The npm package and repository name stay `ai-cv-analyser`. The name on the page is CVAnalyser.
+
 The match score, the gap list, rewritten bullets, and study links are stubbed on purpose. [LESSON_PLAN.md](LESSON_PLAN.md) is the build order for those pieces. The results page already has a place for each one.
 
-Jordan Hale, the person you see in mock mode, is fictional.
+Jordan Hale, the person you see in test mode, is fictional. Without `OPENAI_API_KEY`, CVAnalyser shows that sample profile and also the text it actually read from your file.
 
 ## What works today
 
@@ -24,17 +26,17 @@ Update this table when a lesson is finished. It is the first thing a reader shou
 
 ## Screenshots
 
-The form, with the sample CV and advert loaded:
+The form, with the sample CV and advert loaded. The test-mode note sits above the fields:
 
-![The home page: CV text, job advert, and a list of what this build does](docs/screenshots/home.png)
+![CVAnalyser home page with the sample CV loaded and a test-mode note](docs/screenshots/home.png)
 
-Mock mode on the results page. The profile is sample data:
+Test mode on the results page. The banner says the profile is a sample, and the text read from the file is shown first:
 
-![The results page showing Jordan Hale's structured profile](docs/screenshots/results.png)
+![CVAnalyser results in test mode, with the extracted CV text above the sample profile](docs/screenshots/results.png)
 
-The full results page, including the lesson slots:
+The rest of that page keeps the job advert and the lesson slots:
 
-![The full results page, with lesson cards under the profile](docs/screenshots/results-full.png)
+![CVAnalyser results page continuing into the job advert and lesson cards](docs/screenshots/results-full.png)
 
 ## How it fits together
 
@@ -66,7 +68,7 @@ flowchart TD
   stubs --> page
 ```
 
-The browser keeps the last result in `sessionStorage` for this tab. There is no database. In live mode the CV text is sent to OpenAI with `store: false`. Mock mode does not make that call.
+The browser keeps the last result in `sessionStorage` for this tab. There is no database. With an API key, the CV text is sent to OpenAI with `store: false`. Test mode does not make that call.
 
 ## Setup
 
@@ -100,7 +102,7 @@ Set `MOCK_LLM=true` to force the sample profile even when a key is present.
 - **Structured outputs, not a hopeful `JSON.parse`.** `lib/cv/extract-cv-profile.ts` calls `chat.completions.parse` with `zodResponseFormat`. The Zod schema is the contract for both the model and the page. Optional fields are not used: strict mode rejects them, so missing text is an empty string.
 - **The model is told the CV is data.** The document sits inside `<cv>` markers in the user message. Lesson 6 is the code-side guard, because a prompt is not a control. That matters for a tool whose input is written by the candidate.
 - **PDF text stays on the server.** `unpdf` runs in the route handler. Scanned pages fail with a clear message instead of an empty profile.
-- **Mock mode is a first-class path.** Reviewers can run the app without a secret. The banner on the results page says the profile is sample data, and the extracted text is still shown so the PDF parser can be checked.
+- **Test mode is obvious.** With no API key the results banner says you are seeing a sample profile, not your CV, and the text read from the file is shown above that profile.
 - **Later steps cannot take down the profile.** If a lesson function throws, `lib/analyse.ts` keeps the CV profile and puts the error on the page.
 - **Embeddings are part of the design, not a keyword hack.** Lesson 2 scores exact matches in ordinary TypeScript, then uses embeddings only for the names that did not join. The catalogue in lesson 5 is a real list of docs, so the app is not asked to invent URLs.
 

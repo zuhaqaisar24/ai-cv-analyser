@@ -37,4 +37,4 @@ Dissertation: anomaly detection on database audit logs.
 
 BSc Computer Science, University of Example, 2023
 
-This CV is fictional sample data for ai-cv-analyser.
+This CV is fictional sample data for CVAnalyser.

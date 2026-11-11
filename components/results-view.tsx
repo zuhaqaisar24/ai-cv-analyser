@@ -46,16 +46,16 @@ export function ResultsView() {
         <Link href="/" className="text-sm text-primary underline-offset-4 hover:underline">
           Analyse another CV
         </Link>
-        <p className="text-sm text-muted-foreground">
-          {result.mode === "mock" ? "Mock mode" : `Live mode · ${result.model ?? "model"}`}
+        <p className="text-sm font-medium text-primary">
+          {result.mode === "mock" ? "Test mode" : `Live · ${result.model ?? "model"}`}
         </p>
       </div>
 
       {result.mode === "mock" ? (
-        <Alert className="border-primary/30 bg-primary/5">
-          <AlertTitle>Mock mode</AlertTitle>
+        <Alert className="border-primary/30 bg-accent">
+          <AlertTitle>Test mode</AlertTitle>
           <AlertDescription>
-            There is no API key, so the profile below is sample data for a fictional graduate, Jordan Hale. It is not a reading of the CV you submitted. The text that was extracted is at the bottom of this page, which is how you check the PDF parser.
+            Test mode: no AI key yet, so you&apos;re seeing a sample profile, not your CV. Add OPENAI_API_KEY to .env.local to analyse your real CV.
           </AlertDescription>
         </Alert>
       ) : (
@@ -104,15 +104,18 @@ export function ResultsView() {
         </Alert>
       ) : null}
 
-      <CvProfileView profile={result.cvProfile} />
-      <PlannedSections result={result} />
-
-      <details className="text-sm">
-        <summary className="cursor-pointer text-muted-foreground">Text sent for extraction</summary>
-        <pre className="mt-2 max-h-96 overflow-auto whitespace-pre-wrap rounded-lg bg-muted/70 p-3 font-sans text-sm">
+      <section className="rounded-2xl bg-card px-5 py-5 shadow-sm ring-1 ring-primary/10">
+        <h2 className="font-heading text-2xl">Text read from your CV</h2>
+        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+          This is the text taken from the file or paste you just submitted. If you recognise it, the upload worked. In test mode the profile further down is still the sample, not this text.
+        </p>
+        <pre className="mt-4 max-h-64 overflow-auto whitespace-pre-wrap rounded-xl bg-accent/70 p-4 font-sans text-sm leading-relaxed">
           {result.cvText}
         </pre>
-      </details>
+      </section>
+
+      <CvProfileView profile={result.cvProfile} />
+      <PlannedSections result={result} />
     </div>
   );
 }

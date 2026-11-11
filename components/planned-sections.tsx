@@ -44,14 +44,27 @@ export function PlannedSections({ result }: { result: AnalyseResponse }) {
             ) : null}
           </div>
         ) : (
-          <LessonCard step={lessonStep("job")} />
+          <div className="space-y-4">
+            <div className="rounded-2xl bg-card px-5 py-5 shadow-sm ring-1 ring-primary/10">
+              <h2 className="font-heading text-2xl">Your job advert</h2>
+              <p className="mt-2 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+                This is the advert you pasted. CVAnalyser has not matched it to the CV. That matching starts in Lesson 1, and it is not built yet.
+              </p>
+              <pre className="mt-4 max-h-56 overflow-auto whitespace-pre-wrap rounded-xl bg-accent/70 p-4 font-sans text-sm leading-relaxed">
+                {result.jobAdvertText}
+              </pre>
+            </div>
+            <LessonCard step={lessonStep("job")} />
+          </div>
         )}
-        <details className="mt-3 text-sm">
-          <summary className="cursor-pointer text-muted-foreground">Job advert text</summary>
-          <pre className="mt-2 max-h-64 overflow-auto whitespace-pre-wrap rounded-lg bg-muted/70 p-3 font-sans text-sm">
-            {result.jobAdvertText}
-          </pre>
-        </details>
+        {result.jobProfile ? (
+          <details className="mt-3 text-sm" open>
+            <summary className="cursor-pointer text-muted-foreground">Job advert you pasted</summary>
+            <pre className="mt-2 max-h-64 overflow-auto whitespace-pre-wrap rounded-xl bg-accent/70 p-4 font-sans text-sm">
+              {result.jobAdvertText}
+            </pre>
+          </details>
+        ) : null}
       </section>
 
       <section>

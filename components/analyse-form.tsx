@@ -121,12 +121,18 @@ export function AnalyseForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="rounded-xl bg-card px-4 py-5 ring-1 ring-foreground/10 sm:px-6" aria-busy={pending}>
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+    <form onSubmit={onSubmit} className="rounded-2xl bg-card px-4 py-6 shadow-sm ring-1 ring-primary/10 sm:px-6" aria-busy={pending}>
+      <Alert className="mb-5 border-primary/25 bg-accent">
+        <AlertTitle>Test mode</AlertTitle>
+        <AlertDescription>
+          No AI key yet. The next page will show a sample profile, not a reading of your CV. Add OPENAI_API_KEY to .env.local to analyse your real CV. The text from your file is still shown, so you can see that the upload worked.
+        </AlertDescription>
+      </Alert>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 className="font-heading text-2xl">CV and job advert</h2>
+          <h2 className="font-heading text-2xl">Your CV</h2>
           <p className="mt-1 max-w-xl text-sm text-muted-foreground">
-            No key needed to try it. Without <span className="font-mono text-xs">OPENAI_API_KEY</span>, the profile is sample data and the text below is still read locally.
+            Paste the text, or upload a PDF that contains real text rather than a scan.
           </p>
         </div>
         <Button type="button" variant="outline" onClick={loadSample} disabled={pending}>
@@ -221,8 +227,11 @@ export function AnalyseForm() {
           placeholder="Paste the advert here."
           className="mt-2 min-h-40 md:text-base"
         />
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+          This is the job you want the CV compared with. CVAnalyser keeps the wording you paste. Matching that advert against the CV starts in Lesson 1, and it is not built yet.
+        </p>
         <p className="mt-1 text-xs text-muted-foreground">
-          Kept with the result. Not sent to a model until lesson 1. {jobAdvert.trim().length} characters, at least {MIN_JOB_CHARS}.
+          {jobAdvert.trim().length} characters. At least {MIN_JOB_CHARS}.
         </p>
       </div>
 
@@ -238,7 +247,7 @@ export function AnalyseForm() {
           {pending ? "Reading the CV…" : "Analyse CV"}
         </Button>
         <p className="text-sm text-muted-foreground">
-          The profile opens on the next page. Other sections stay marked as lessons until you build them.
+          The next page shows what was read from your CV. Without an API key, the profile itself is the sample.
         </p>
       </div>
     </form>
